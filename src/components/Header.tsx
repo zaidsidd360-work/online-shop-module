@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
 
 const Header: React.FC = () => {
 	return (
@@ -11,13 +10,18 @@ const Header: React.FC = () => {
 			>
 				Online Store
 			</Link>
-			<Link
+			{/* <Link
 				to="/cart"
-				className="flex items-center gap-2 px-4 py-2 text-gray-700 rounded-full hover:bg-gray-100 transition-all"
+				className="flex items-center gap-2 px-4 py-2 text-gray-700 rounded-full hover:bg-gray-100 transition-all relative"
 			>
 				<ShoppingCart className="w-5 h-5" />
 				<span className="font-medium">Cart</span>
-			</Link>
+				{cartItemCount > 0 && (
+					<span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+						{cartItemCount}
+					</span>
+				)}
+			</Link> */}
 		</header>
 	);
 };

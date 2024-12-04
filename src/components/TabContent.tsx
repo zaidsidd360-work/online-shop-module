@@ -2,7 +2,6 @@ import React from "react";
 import FilterSection from "./FilterSection";
 import ItemList from "./ItemList";
 import { CartItem } from "../helpet";
-import MultiStepForm from "./MultiStepForm";
 
 interface TabContentProps {
 	activeTab: string;
@@ -38,6 +37,11 @@ const TabContent: React.FC<TabContentProps> = ({
 							<FilterSection
 								onFilterChange={onFilterChange}
 								onSortChange={onSortChange}
+								cartItemCount={cart.reduce(
+									(sum, item) => sum + item.quantity,
+									0
+								)}
+								activeTab={activeTab}
 							/>
 						</div>
 						<ItemList
@@ -46,17 +50,36 @@ const TabContent: React.FC<TabContentProps> = ({
 							onRemoveFromCart={onRemoveFromCart}
 							filters={filters}
 							sortKey={sortKey}
+							activeTab={activeTab}
 						/>
 					</div>
 				);
 			case "Memberships":
 				return (
 					<div className="p-6">
-						<h2>Memberships Content</h2>
+						<div className="sticky top-4 z-10">
+							<FilterSection
+								onFilterChange={onFilterChange}
+								onSortChange={onSortChange}
+								cartItemCount={cart.reduce(
+									(sum, item) => sum + item.quantity,
+									0
+								)}
+								activeTab={activeTab}
+							/>
+						</div>
+						<ItemList
+							cart={cart}
+							onAddToCart={onAddToCart}
+							onRemoveFromCart={onRemoveFromCart}
+							filters={filters}
+							sortKey={sortKey}
+							activeTab={activeTab}
+						/>
 					</div>
 				);
 			case "Heating & Cooling Estimate":
-				return <div className="p-6">{/* <MultiStepForm /> */}</div>;
+				return <div className="p-6"> Hello</div>;
 			default:
 				return null;
 		}

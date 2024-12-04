@@ -4,7 +4,6 @@ import Header from "./components/Header";
 import Tabs from "./components/Tabs";
 import CartPage from "./pages/CartPage";
 import TabContent from "./components/TabContent";
-import FormStateContextProvider from "./contexts/FormStateContextProvider";
 
 interface CartItem {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,51 +64,44 @@ const App: React.FC = () => {
 	};
 
 	return (
-		<FormStateContextProvider>
-			<Router>
-				<div className="min-h-screen bg-gray-50 text-gray-900">
-					<Header
-					// cartItemCount={cart.reduce(
-					// 	(sum, item) => sum + item.quantity,
-					// 	0
-					// )}
-					/>
-					<Routes>
-						<Route
-							path="/"
-							element={
-								<>
-									<Tabs
-										activeTab={activeTab}
-										onTabChange={setActiveTab}
-									/>
-									<TabContent
-										activeTab={activeTab}
-										filters={filters}
-										sortKey={sortKey}
-										onFilterChange={handleFilterChange}
-										onSortChange={handleSortChange}
-										cart={cart}
-										onAddToCart={addToCart}
-										onRemoveFromCart={removeFromCart}
-									/>
-								</>
-							}
-						/>
-						<Route
-							path="/cart"
-							element={
-								<CartPage
+		<Router>
+			<div className="min-h-screen bg-gray-50 text-gray-900">
+				<Header />
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<>
+								<Tabs
+									activeTab={activeTab}
+									onTabChange={setActiveTab}
+								/>
+								<TabContent
+									activeTab={activeTab}
+									filters={filters}
+									sortKey={sortKey}
+									onFilterChange={handleFilterChange}
+									onSortChange={handleSortChange}
 									cart={cart}
 									onAddToCart={addToCart}
 									onRemoveFromCart={removeFromCart}
 								/>
-							}
-						/>
-					</Routes>
-				</div>
-			</Router>
-		</FormStateContextProvider>
+							</>
+						}
+					/>
+					<Route
+						path="/cart"
+						element={
+							<CartPage
+								cart={cart}
+								onAddToCart={addToCart}
+								onRemoveFromCart={removeFromCart}
+							/>
+						}
+					/>
+				</Routes>
+			</div>
+		</Router>
 	);
 };
 

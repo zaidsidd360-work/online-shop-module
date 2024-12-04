@@ -1,5 +1,5 @@
 import React from "react";
-import { CartItem, dummyData } from "../helpet";
+import { CartItem, dummyData, dummyDataMembership } from "../helpet";
 import { Minus, Plus } from "lucide-react";
 
 interface ItemListProps {
@@ -9,6 +9,7 @@ interface ItemListProps {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onAddToCart: (item: any) => void;
 	onRemoveFromCart: (itemId: string, all?: boolean) => void;
+	activeTab: string;
 }
 
 const ItemList: React.FC<ItemListProps> = ({
@@ -17,18 +18,22 @@ const ItemList: React.FC<ItemListProps> = ({
 	cart,
 	onAddToCart,
 	onRemoveFromCart,
+	activeTab,
 }) => {
 	const { brand, size } = filters;
 
 	// Filter and sort the data
-	const filteredItems = dummyData
-		.filter((item) => (brand ? item.brand === brand : true))
-		.filter((item) => (size ? item.size === size : true))
-		.sort((a, b) => {
-			if (sortKey === "priceAsc") return a.price - b.price;
-			if (sortKey === "priceDesc") return b.price - a.price;
-			return 0; // No sorting
-		});
+	const filteredItems =
+		activeTab === "Filters"
+			? dummyData
+			: dummyDataMembership
+					.filter((item) => (brand ? item.brand === brand : true))
+					.filter((item) => (size ? item.size === size : true))
+					.sort((a, b) => {
+						if (sortKey === "priceAsc") return a.price - b.price;
+						if (sortKey === "priceDesc") return b.price - a.price;
+						return 0; // No sorting
+					});
 
 	const getItemQuantity = (itemId: string) => {
 		const cartItem = cart.find(
@@ -51,7 +56,7 @@ const ItemList: React.FC<ItemListProps> = ({
 								<img
 									src={item.imageUrl}
 									alt={item.name}
-									className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+									className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
 								/>
 							</div>
 
