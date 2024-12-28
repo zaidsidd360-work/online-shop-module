@@ -1,20 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { CartItem } from "../helpet";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { useApp } from "../contexts/AppContext";
 
-interface CartPageProps {
-	cart: CartItem[];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	onAddToCart: (item: any) => void;
-	onRemoveFromCart: (itemId: string, all?: boolean) => void;
-}
-
-const CartPage: React.FC<CartPageProps> = ({
-	cart,
-	onAddToCart,
-	onRemoveFromCart,
-}) => {
+const CartPage: React.FC = () => {
+	const { cart, addToCart, removeFromCart } = useApp();
 	const total = cart.reduce(
 		(sum, { item, quantity }) => sum + item.price * quantity,
 		0
@@ -72,7 +62,7 @@ const CartPage: React.FC<CartPageProps> = ({
 							<div className="flex items-center gap-2">
 								<button
 									onClick={() =>
-										onRemoveFromCart(item.id.toString())
+										removeFromCart(item.id.toString())
 									}
 									className="p-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
 								>
@@ -82,7 +72,7 @@ const CartPage: React.FC<CartPageProps> = ({
 									{quantity}
 								</span>
 								<button
-									onClick={() => onAddToCart(item)}
+									onClick={() => addToCart(item)}
 									className="p-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800"
 								>
 									<Plus className="w-4 h-4" />
@@ -90,7 +80,7 @@ const CartPage: React.FC<CartPageProps> = ({
 							</div>
 							<button
 								onClick={() =>
-									onRemoveFromCart(item.id.toString(), true)
+									removeFromCart(item.id.toString(), true)
 								}
 								className="flex items-center gap-2 text-red-600 hover:text-red-700"
 							>

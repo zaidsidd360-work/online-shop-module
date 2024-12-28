@@ -1,25 +1,15 @@
 import React from "react";
-import { CartItem, dummyData, dummyDataMembership } from "../helpet";
+import { dummyData, dummyDataMembership } from "../helpet";
 import { Minus, Plus } from "lucide-react";
+import { useApp } from "../contexts/AppContext";
 
 interface ItemListProps {
-	filters: { brand: string; size: string };
-	sortKey: string;
-	cart: CartItem[];
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	onAddToCart: (item: any) => void;
-	onRemoveFromCart: (itemId: string, all?: boolean) => void;
 	activeTab: string;
 }
 
-const ItemList: React.FC<ItemListProps> = ({
-	filters,
-	sortKey,
-	cart,
-	onAddToCart,
-	onRemoveFromCart,
-	activeTab,
-}) => {
+const ItemList: React.FC<ItemListProps> = ({ activeTab }) => {
+	const { filters, sortKey, cart, addToCart, removeFromCart } = useApp();
+
 	const { brand, size } = filters;
 
 	// Filter and sort the data
@@ -75,7 +65,7 @@ const ItemList: React.FC<ItemListProps> = ({
 									</p>
 									{quantity === 0 ? (
 										<button
-											onClick={() => onAddToCart(item)}
+											onClick={() => addToCart(item)}
 											className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gray-900 text-white rounded-xl hover:bg-gray-800 active:bg-gray-950 transition-colors text-base sm:text-lg font-medium"
 										>
 											Add to Cart
@@ -84,7 +74,7 @@ const ItemList: React.FC<ItemListProps> = ({
 										<div className="flex items-center gap-2">
 											<button
 												onClick={() =>
-													onRemoveFromCart(
+													removeFromCart(
 														item.id.toString()
 													)
 												}
@@ -96,9 +86,7 @@ const ItemList: React.FC<ItemListProps> = ({
 												{quantity}
 											</span>
 											<button
-												onClick={() =>
-													onAddToCart(item)
-												}
+												onClick={() => addToCart(item)}
 												className="p-2 sm:px-4 sm:py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800"
 											>
 												<Plus className="w-4 h-4 sm:w-5 sm:h-5" />

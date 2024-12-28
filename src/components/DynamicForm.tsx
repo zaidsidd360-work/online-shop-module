@@ -6,6 +6,9 @@ type Props = {
 	initialStep: string;
 	stepHistory: string[];
 	setStepHistory: (history: string[]) => void;
+	formData: Record<string, string>;
+	setFormData: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+	onOptionSelect?: (stepName: string, option: Option) => void;
 };
 
 const DynamicForm: React.FC<Props> = ({
@@ -13,12 +16,14 @@ const DynamicForm: React.FC<Props> = ({
 	initialStep,
 	stepHistory,
 	setStepHistory,
+	formData,
+	setFormData,
+	onOptionSelect,
 }) => {
 	const [currentStep, setCurrentStep] = useState(initialStep);
 	const [selectedOption, setSelectedOption] = useState<Option | undefined>(
 		undefined
 	);
-	const [formData, setFormData] = useState<Record<string, string>>({});
 
 	const step = steps[currentStep];
 
@@ -39,15 +44,28 @@ const DynamicForm: React.FC<Props> = ({
 	};
 
 	const handleOptionSelect = (option: Option) => {
+		setFormData((prevData) => ({
+			...prevData,
+			[step.question]: option.title,
+		}));
 		setSelectedOption(option);
+
+		// Call the parent handler if provided
+		if (onOptionSelect) {
+			onOptionSelect(currentStep, option);
+		}
 	};
 
 	const handleNextClick = () => {
+		console.log(formData);
 		goToNextStep(selectedOption?.nextStep || step.nextStep || null);
 	};
 
 	const handleFieldChange = (fieldName: string, value: string) => {
-		setFormData((prevData) => ({ ...prevData, [fieldName]: value }));
+		setFormData((prevData) => ({
+			...prevData,
+			[fieldName]: value,
+		}));
 	};
 
 	const handleFieldSubmit = () => {
@@ -67,24 +85,35 @@ const DynamicForm: React.FC<Props> = ({
 
 				{step.options && (
 					<div>
-						<div className="grid grid-cols-2 gap-4">
+						<div className="grid grid-cols-2 gap-4 max-h-[40vh] overflow-y-auto">
 							{step.options.map((option, index) => (
 								<button
 									key={index}
 									onClick={() => handleOptionSelect(option)}
-									className={`group relative border rounded-lg p-4 bg-white text-left shadow-sm transition-all duration-200 
-                    ${
-						selectedOption?.title === option.title
-							? "border-zinc-900 ring-2 ring-zinc-900"
-							: "border-gray-200 hover:border-zinc-900"
-					}`}
+									className={`group relative border rounded-lg p-4 bg-white text-left transition-all duration-200 active:scale-95
+                                    ${
+										selectedOption?.title === option.title
+											? "border-zinc-900 border-2"
+											: "border-gray-200 hover:border-zinc-900"
+									} flex flex-col`}
 								>
-									<h3 className="font-medium text-zinc-900">
-										{option.title}
-									</h3>
-									<p className="text-sm text-zinc-500 mt-1">
-										{option.subtext}
-									</p>
+									{option.image && (
+										<div className="mb-3 flex justify-center">
+											<img
+												src={option.image}
+												alt={option.title}
+												className="max-h-32 w-auto object-contain rounded-md"
+											/>
+										</div>
+									)}
+									<div>
+										<h3 className="font-medium text-zinc-900">
+											{option.title}
+										</h3>
+										<p className="text-sm text-zinc-500 mt-1">
+											{option.subtext}
+										</p>
+									</div>
 								</button>
 							))}
 						</div>
