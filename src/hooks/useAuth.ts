@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
 	loginUser,
 	logoutUser,
 	registerUser,
 	// checkAuthStatus,
-	type User,
 } from "../api/auth/userAuth.api";
 
 export function useAuth() {

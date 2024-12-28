@@ -15,7 +15,7 @@ const EstimateModal: React.FC<EstimateModalProps> = ({ isOpen, onClose }) => {
 	const [leadScore, setLeadScore] = useState<number>(0);
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleOptionSelect = (stepName: string, selectedOption: any) => {
+	const handleOptionSelect = (_stepName: string, selectedOption: any) => {
 		if (selectedOption) {
 			// Update price
 			setPriceEstimate((prev) => prev + (selectedOption.price || 0));

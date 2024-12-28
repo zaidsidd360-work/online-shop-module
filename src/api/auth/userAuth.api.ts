@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { ReactNode } from "react";
 
 // process.env.REACT_APP_API_URL ||
